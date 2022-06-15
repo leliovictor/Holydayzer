@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 const holidays = [
   { date: "1/1/2022", name: "Confraternização mundial" },
@@ -18,12 +19,15 @@ const today = new Date();
 const todayString = today.toLocaleDateString();
 
 const server = express();
+server.use(cors());
 
 server.get("/holidays", (req, res) => {
   res.send(holidays);
 });
 
 server.get("/is-today-holiday", (req, res) => {
+  const todayHoliday = holidays.filter((obj) => obj.date === todayString);
+
   const response =
     todayHoliday.length > 0
       ? `Sim, hoje é ${todayHoliday[0].name}`
@@ -42,4 +46,4 @@ server.get("/holidays/:month", (req, res) => {
   res.send(monthHolidays);
 });
 
-server.listen(4000);
+server.listen(4001);
